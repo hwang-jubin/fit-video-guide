@@ -1,7 +1,7 @@
 export default function SearchBar() {
   return (
     <div className="relative">
-      <input className=" focus:outline-none focus:border-neutral-500 p-3  w-[600px] h-11 rounded-full border-2" />
+      <input className=" focus:outline-none focus:border-neutral-400 p-3  w-[600px] h-11 rounded-full border-2" />
       <button
         type="submit"
         className="absolute top-1/2 -translate-y-1/2  right-3 bg-neutral-200 size-9 rounded-full flex items-center justify-center"

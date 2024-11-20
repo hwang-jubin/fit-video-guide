@@ -13,12 +13,13 @@ export default function CreateAccount() {
           <div className="text-center mt-6 font-normal text-sm text-neutral-400">
             회원가입 하고 개인화된 맞춤 동영상을 추천 받으세요!
           </div>
-          <form className="flex flex-col gap-2 mt-9">
+          <form className="flex flex-col gap-3 mt-9">
             <FormInput
               name="username"
               type="text"
               placeholder="닉네임을 입력하세요"
               required
+              errors={[]}
             />
 
             <FormInput
@@ -26,6 +27,7 @@ export default function CreateAccount() {
               type="email"
               placeholder="이메일을 입력하세요"
               required
+              errors={[]}
             />
 
             <FormInput
@@ -33,12 +35,14 @@ export default function CreateAccount() {
               type="password"
               placeholder="비밀번호를 입력하세요"
               required
+              errors={[]}
             />
             <FormInput
               name="confirm_password"
               type="password"
               placeholder="비밀번호를 확인하세요"
               required
+              errors={[]}
             />
             <div className="mt-6">
               <Button />
@@ -47,7 +51,7 @@ export default function CreateAccount() {
           <div className="mt-14 flex gap-3 justify-center items-center text-sm ">
             <div className=" text-neutral-600">이미 계정이 있으신가요?</div>
             <Link href="/login" className="text-blue-500">
-              로그인 하러 가기
+              로그인
             </Link>
           </div>
         </div>

@@ -2,11 +2,14 @@ import Image from "next/image";
 import { dataProps } from "../page";
 import Link from "next/link";
 
+const spanStyles =
+  "bg-white text-black px-2 box-border rounded-md mr-1 inline-block text-sm";
+
 export default function Excercise(data: dataProps) {
   return (
     <Link
       href={`/detail/${data.id}`}
-      className="bg-black h-80 rounded-md overflow-hidden"
+      className="bg-black h-[350px] rounded-md overflow-hidden"
     >
       <div className="relative w-full h-52 overflow-hidden">
         <Image
@@ -19,14 +22,23 @@ export default function Excercise(data: dataProps) {
         />
       </div>
 
-      <div className="text-white px-5 py-2">
-        <div className="text-lg font-bold">{data.video_title}</div>
+      <div className="text-white px-5 py-2  box-border">
+        <div className="text-lg font-bold h-16 flex items-center mb-2">
+          {data.video_title}
+        </div>
         <div>
-          <span>{data.age_group}</span>
-          <span>{data.support_tool}</span>
-          <span>{data.training_part}</span>
-          <span>{data.training_purpose}</span>
-          <span>{data.training_type}</span>
+          {data.age_group && (
+            <span className={spanStyles}># {data.age_group}</span>
+          )}
+          {data.support_tool && (
+            <span className={spanStyles}># {data.support_tool}</span>
+          )}
+          {data.training_part && (
+            <span className={spanStyles}># {data.training_part}</span>
+          )}
+          {data.training_purpose && (
+            <span className={spanStyles}># {data.training_purpose}</span>
+          )}
         </div>
       </div>
     </Link>
