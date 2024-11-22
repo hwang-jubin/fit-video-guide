@@ -43,11 +43,6 @@ export default function Home() {
     <div className=" w-[1440px]">
       <div className="pt-20 px-5 mx-6 ">
         <Category />
-        <div className="grid grid-cols-3 gap-x-16 gap-y-11 mt-6">
-          {data.map((data) => (
-            <Excercise key={data.id} {...data} />
-          ))}
-        </div>
       </div>
     </div>
   );
