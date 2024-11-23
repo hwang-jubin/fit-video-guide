@@ -1,9 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import Button from "../components/button";
 import FormInput from "../components/formInput";
 import Header from "../components/header";
 
+import createAccount from "./action";
+import { useActionState } from "react";
+
 export default function CreateAccount() {
+  const [state, action] = useActionState(createAccount, null);
+
   return (
     <div>
       <Header />
@@ -13,13 +20,13 @@ export default function CreateAccount() {
           <div className="text-center mt-6 font-normal text-sm text-neutral-400">
             회원가입 하고 개인화된 맞춤 동영상을 추천 받으세요!
           </div>
-          <form className="flex flex-col gap-3 mt-9">
+          <form action={action} className="flex flex-col gap-3 mt-9">
             <FormInput
               name="username"
               type="text"
               placeholder="닉네임을 입력하세요"
               required
-              errors={[]}
+              errors={state?.fieldErrors.username ?? state?.formErrors ?? []}
             />
 
             <FormInput
@@ -27,7 +34,7 @@ export default function CreateAccount() {
               type="email"
               placeholder="이메일을 입력하세요"
               required
-              errors={[]}
+              errors={state?.fieldErrors.email ?? []}
             />
 
             <FormInput
@@ -35,14 +42,14 @@ export default function CreateAccount() {
               type="password"
               placeholder="비밀번호를 입력하세요"
               required
-              errors={[]}
+              errors={state?.fieldErrors.password ?? []}
             />
             <FormInput
               name="confirm_password"
               type="password"
               placeholder="비밀번호를 확인하세요"
               required
-              errors={[]}
+              errors={state?.fieldErrors.confirm_password ?? []}
             />
             <div className="mt-6">
               <Button />

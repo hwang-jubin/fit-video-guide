@@ -27,7 +27,7 @@ interface Video {
 const spanStyles =
   "bg-black text-white p-2 box-border rounded-md mr-2 inline-block";
 
-export default function exerciseDetail() {
+export default function ExerciseDetail() {
   const [data, setData] = useState<Video[]>([]);
   const param = useParams();
 
@@ -54,13 +54,13 @@ export default function exerciseDetail() {
     <div>
       <Header />
       <div className="flex">
-        <div className="w-[820px] border-r-[2px] h-[100vh]">
-          <div className="pt-20 px-5">
-            <div>
+        <div className="w-[1000px] border-r-[2px] min-h-screen">
+          <div className="pt-20 px-14">
+            <div className="flex flex-col ">
               <video
                 key={video.video_url}
                 controls
-                width="800px"
+                width="900px"
                 height="600px"
                 preload="metadata"
                 style={{ objectFit: "fill" }}
@@ -68,6 +68,7 @@ export default function exerciseDetail() {
                 <source src={video.video_url} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+
               <div className="mt-3 text-2xl font-bold" key={video.video_title}>
                 {video.video_title}
               </div>
@@ -91,7 +92,7 @@ export default function exerciseDetail() {
             </div>
           </div>
         </div>
-        <div className="pt-20 px-5">
+        <div className="pt-20 flex-grow">
           <RelatedVideos
             age_group={video.age_group}
             training_purpose={video.training_purpose}

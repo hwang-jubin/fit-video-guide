@@ -1,5 +1,6 @@
 import { dataProps } from "@/app/page";
 import { useEffect, useState } from "react";
+import RelatedVideo from "./related-video";
 
 export default function RelatedVideos({
   age_group,
@@ -27,9 +28,18 @@ export default function RelatedVideos({
       setData(fetchedData);
     };
     getData();
-  }, []);
+  }, [age_group, training_purpose, support_tool]);
 
   console.log(data);
 
-  return <></>;
+  return (
+    <div className="flex flex-col w-auto">
+      <div className="mb-6 text-lg ml-7">연관 동영상</div>
+      <div className="flex flex-col gap-3 items-center">
+        {data?.map((data, index) => (
+          <RelatedVideo key={index} {...data} />
+        ))}
+      </div>
+    </div>
+  );
 }
