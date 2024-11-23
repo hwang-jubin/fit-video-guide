@@ -3,6 +3,7 @@
 import Header from "@/app/components/header";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import RelatedVideos from "./components/related-videos";
 
 interface Video {
   id: string;
@@ -20,6 +21,7 @@ interface Video {
   support_tool: string | null;
   fitness_factor: string | null;
   training_part: string | null;
+  search_vector: string;
 }
 
 const spanStyles =
@@ -47,6 +49,7 @@ export default function exerciseDetail() {
   // 배열의 첫 번째 데이터 추출
   const video = data[0];
 
+  console.log(video);
   return (
     <div>
       <Header />
@@ -89,7 +92,11 @@ export default function exerciseDetail() {
           </div>
         </div>
         <div className="pt-20 px-5">
-          <div>연관 동영상</div>
+          <RelatedVideos
+            age_group={video.age_group}
+            training_purpose={video.training_purpose}
+            support_tool={video.support_tool}
+          />
         </div>
       </div>
     </div>
