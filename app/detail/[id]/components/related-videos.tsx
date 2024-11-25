@@ -33,9 +33,9 @@ export default function RelatedVideos({
   console.log(data);
 
   return (
-    <div className="flex flex-col w-auto">
-      <div className="mb-6 text-lg ml-7">연관 동영상</div>
-      <div className="flex flex-col gap-3 items-center">
+    <div className=" flex-1 flex-col box-border min-w-0 ">
+      <div className="mb-3 text-lg ml-7 font-bold">연관 동영상</div>
+      <div className="flex flex-col gap-6 items-center">
         {data?.map((data, index) => (
           <RelatedVideo key={index} {...data} />
         ))}

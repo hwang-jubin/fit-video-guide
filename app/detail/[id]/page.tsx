@@ -54,7 +54,7 @@ export default function ExerciseDetail() {
     <div>
       <Header />
       <div className="flex">
-        <div className="w-[1000px] border-r-[2px] min-h-screen">
+        <div className="min-w-[1000px] border-r-[2px] min-h-screen">
           <div className="pt-20 px-14">
             <div className="flex flex-col ">
               <video

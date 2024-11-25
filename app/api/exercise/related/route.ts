@@ -27,12 +27,12 @@ export async function GET(req: NextRequest) {
   }
 
   const query = queryString.join(",");
-  console.log(query);
 
   const { data: videos, error } = await db
     .from("videos")
     .select("*")
     .or(query)
+    // .order("RANDOM()")
     .limit(10);
 
   return NextResponse.json(videos);
