@@ -1,13 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import Button from "../components/button";
 import FormInput from "../components/formInput";
 import Header from "../components/header";
-import db from "@/lib/db";
 
-export default async function Login() {
-  const {
-    data: { user },
-  } = await db.auth.getUser();
+import { useActionState } from "react";
+import login from "./action";
+
+export default function Login() {
+  const [state, action] = useActionState(login, null);
+
   return (
     <div>
       <Header />
@@ -17,26 +20,31 @@ export default async function Login() {
           <div className="text-center mt-6 font-normal text-sm text-neutral-400">
             로그인 하고 개인화된 맞춤 동영상을 추천 받으세요!
           </div>
-          <form className="flex flex-col gap-3 mt-9">
+          <form action={action} className="flex flex-col gap-3 mt-9">
             <div className=" flex flex-col ">
               <FormInput
                 name="email"
                 type="email"
                 placeholder="이메일을 입력하세요"
                 required
-                errors={[]}
+                errors={state?.error.email ?? []}
               />
             </div>
             <div>
               <FormInput
                 name="password"
                 type="password"
-                placeholder="비밀번호를 입력하세요 입력하세요"
+                placeholder="비밀번호를 입력하세요"
                 required
-                errors={[]}
+                errors={state?.error.password ?? []}
               />
             </div>
             <Button />
+            {state?.error.loginFail ? (
+              <div className="text-red-500 text-sm text-center">
+                {state?.error.loginFail}
+              </div>
+            ) : null}
           </form>
           <div className="flex justify-center items-center mt-11  text-sm text-neutral-600">
             <div>계정이 없으신가요?</div>
