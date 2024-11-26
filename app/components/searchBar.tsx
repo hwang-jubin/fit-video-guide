@@ -39,20 +39,27 @@ export default function SearchBar() {
 
   const onSubmit = () => {
     if (query.trim() === "") return;
+    query;
     router.push(`/search-result?query=${query}`); // useRouter로 라우팅
+    setTimeout(() => {
+      setQuery("");
+    }, 0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault(); // 기본 Enter 키 동작을 막음 (폼 제출 등)
       onSubmit(); // Enter 키가 눌렸을 때 onSubmit 호출
-      setResults([]);
+      setTimeout(() => {
+        setResults([]);
+      }, 0);
     }
   };
 
   return (
     <div className="relative">
       <input
+        value={query}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
