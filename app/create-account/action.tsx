@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
+import { useCookies } from "next-client-cookies";
 
 import {
   PASSWORD_MIN_LENGTH,
@@ -11,6 +12,8 @@ import z from "zod";
 
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import getCookie from "@/lib/cookie";
 
 const checkPasswords = ({
   password,
@@ -38,17 +41,20 @@ const formSchema = z
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .superRefine(async ({ email }, ctx) => {
-    // console.log(existEmail?.email);
-    // console.log(error?.message);
+    const { data: duplicated_email, error } = await db
+      .from("user_info")
+      .select("*")
+      .eq("email", email);
 
-    // if (existEmail) {
-    //   ctx.addIssue({
-    //     code: "custom",
-    //     message: "This email is already taken",
-    //     path: ["email"],
-    //     fatal: true,
-    //   });
-    // }
+    console.log(duplicated_email);
+    if (error) {
+      ctx.addIssue({
+        code: "custom",
+        message: "이미 등록된 이메일 입니다",
+        path: ["email"],
+        fatal: true,
+      });
+    }
     return z.NEVER;
   })
   .refine(checkPasswords, {
@@ -75,19 +81,38 @@ export default async function createAccount(
     return result.error.flatten();
   } else {
     //
-    const { data: existEmail, error } = await db
-      .from("users")
-      .select("email")
-      .eq("email", result.data.email)
-      .single();
-    console.log(`error:${error?.message}`);
-    if (error?.message) {
-      // return error.message
-    }
-    // const {
-    //   data: { user },
-    // } = await db.auth.getUser();
-    console.log(existEmail?.email);
-    // redirect("/");
+    const { data: authData, error } = await db.auth.signUp({
+      email: result.data?.email,
+      password: result.data.password,
+      options: {
+        data: {
+          nickname: result.data.username, // 추가 메타데이터
+        },
+      },
+    });
+
+    //   const { data:userDetail, error:userDetailError } = await db
+    // .from('user_info')
+    // .insert({
+    //   id: data.user.id,
+    //   email: data.user.email,
+    //   nickname: userForm.nickname,
+    //   age: userForm.age,
+    //   height: userForm.height,
+    //   weight: userForm.weight,
+    //   training_purpose: userForm.trainingPurpose, # muscle_gain, weight_loss, increased_flexibility
+    // })
+
+    // 쿠키 설정
+    const cookieStore = getCookie();
+    (await cookieStore).set("access_token", authData!.session!.access_token, {
+      httpOnly: true,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7일간 유지
+    });
+
+    console.log(authData.session?.access_token);
+
+    redirect("/");
   }
 }
