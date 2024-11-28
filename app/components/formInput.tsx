@@ -31,8 +31,6 @@ export default function FormInput({
   errors,
   ...rest
 }: InputProps & InputHTMLAttributes<HTMLInputElement>) {
-  console.log(errors);
-
   return (
     <div className="relative w-full">
       <input

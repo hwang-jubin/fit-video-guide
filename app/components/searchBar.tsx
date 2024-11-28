@@ -39,7 +39,7 @@ export default function SearchBar() {
 
   const onSubmit = () => {
     if (query.trim() === "") return;
-    query;
+
     router.push(`/search-result?query=${query}`); // useRouter로 라우팅
     setTimeout(() => {
       setQuery("");
