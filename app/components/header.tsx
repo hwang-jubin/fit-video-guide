@@ -1,7 +1,31 @@
+"use client";
+
 import Link from "next/link";
 import SearchBar from "./searchBar";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [isLoading, setLoading] = useState(true); // 로딩 상태 관리
+  const { isAuthenticated, setLogin } = useStore(useAuthStore);
+
+  useEffect(() => {
+    // Zustand 상태가 localStorage에서 로드되기 전까지 로딩 상태 유지
+    const checkAuthStatus = async () => {
+      // 상태가 로드되면 loading 상태를 false로 설정
+      setLoading(false);
+    };
+
+    checkAuthStatus();
+  }, []);
+
+  if (isLoading) {
+    // 로딩 중일 때는 Header를 아예 렌더링하지 않거나,
+    // 상태가 false로 바뀌면 렌더링을 시작함
+    return null;
+  }
+
   return (
     <div className="w-[1440px] h-14 box-border bg-white flex items-center px-3 justify-between shadow-lg fixed z-10">
       <div className=" flex items-center gap-4">
@@ -13,12 +37,21 @@ export default function Header() {
         <Link href="/">FitVideoGuide</Link>
       </div>
       <SearchBar />
-      <Link
-        className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
-        href="/login"
-      >
-        로그인
-      </Link>
+      {!isAuthenticated ? (
+        <Link
+          className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
+          href="/login"
+        >
+          로그인
+        </Link>
+      ) : (
+        <Link
+          className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
+          href="/profile"
+        >
+          프로필
+        </Link>
+      )}
     </div>
   );
 }
