@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use server";
 
 import {
@@ -5,11 +7,10 @@ import {
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
-import getCookie from "@/lib/cookie";
 import db from "@/lib/db";
 import { redirect } from "next/navigation";
-
 import { z } from "zod";
+import tokenGenerate from "../components/auth/token-generate";
 
 const formSchema = z.object({
   email: z
@@ -46,22 +47,14 @@ export default async function login(prevState: any, formData: FormData) {
       password: result.data.password,
     });
 
-    const token = authData.session?.access_token;
-    console.log(token);
     if (authData.user) {
-      const cookieStore = getCookie();
-      const cookieResult = (await cookieStore).set(
-        "access_token",
+      // token 내려주기
+      await tokenGenerate(
         authData.session.access_token,
-        {
-          httpOnly: true,
-          path: "/",
-          maxAge: 60 * 60 * 24 * 7, // 7일간 유지
-        }
+        authData.session.refresh_token
       );
 
-      console.log(cookieResult.get);
-      redirect("/");
+      return { success: "성공" };
     } else {
       return {
         error: {

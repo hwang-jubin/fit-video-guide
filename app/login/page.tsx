@@ -5,11 +5,25 @@ import Button from "../components/button";
 import FormInput from "../components/formInput";
 import Header from "../components/header";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import login from "./action";
+import { useStore } from "zustand";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [state, action] = useActionState(login, null);
+  const { setLogin } = useStore(useAuthStore);
+  const router = useRouter(); // useRouter 훅 사용
+
+  // //login 시에 state를 true로. logout 하면 false 로 해주는 로직 작성해야 함
+  useEffect(() => {
+    // 로그인 성공 시 인증 상태 true로 변경
+    if (state?.success === "성공") {
+      setLogin();
+      router.push("/");
+    }
+  }, [state, setLogin]); // state가 변경될 때마다 실행
 
   return (
     <div>
@@ -27,7 +41,7 @@ export default function Login() {
                 type="email"
                 placeholder="이메일을 입력하세요"
                 required
-                errors={state?.error.email ?? []}
+                errors={state?.error?.email ?? []}
               />
             </div>
             <div>
@@ -36,11 +50,11 @@ export default function Login() {
                 type="password"
                 placeholder="비밀번호를 입력하세요"
                 required
-                errors={state?.error.password ?? []}
+                errors={state?.error?.password ?? []}
               />
             </div>
             <Button />
-            {state?.error.loginFail ? (
+            {state?.error?.loginFail ? (
               <div className="text-red-500 text-sm text-center">
                 {state?.error.loginFail}
               </div>
