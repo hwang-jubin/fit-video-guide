@@ -5,6 +5,7 @@ import SearchBar from "./searchBar";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useEffect, useState } from "react";
+import Logout from "./auth/logout";
 
 export default function Header() {
   const [isLoading, setLoading] = useState(true); // 로딩 상태 관리
@@ -42,15 +43,18 @@ export default function Header() {
           className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
           href="/login"
         >
-          로그인
+          LogIn
         </Link>
       ) : (
-        <Link
-          className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
-          href="/profile"
-        >
-          프로필
-        </Link>
+        <div className="flex gap-3">
+          <Link
+            className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
+            href="/profile"
+          >
+            Profile
+          </Link>
+          <Logout />
+        </div>
       )}
     </div>
   );
