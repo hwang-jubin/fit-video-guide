@@ -4,7 +4,6 @@ import Link from "next/link";
 import Button from "../components/button";
 import FormInput from "../components/formInput";
 import Header from "../components/header";
-
 import { useActionState, useEffect } from "react";
 import login from "./action";
 import { useStore } from "zustand";
@@ -23,11 +22,10 @@ export default function Login() {
       setLogin();
       router.push("/");
     }
-  }, [state, setLogin]); // state가 변경될 때마다 실행
+  }, [state, setLogin, router]); // state가 변경될 때마다 실행
 
   return (
     <div>
-      <Header />
       <div className=" w-full min-h-screen flex items-center justify-center  pt-10">
         <div className="w-[400px] h-[500px] shadow-xl flex flex-col p-9 ">
           <div className="text-center font-bold text-2xl">로그인</div>

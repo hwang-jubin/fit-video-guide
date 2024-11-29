@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Category from "./components/category";
 
 export type dataProps = {
