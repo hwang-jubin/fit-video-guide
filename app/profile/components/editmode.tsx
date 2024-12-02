@@ -28,10 +28,12 @@ export default function Editmode({ userInfo, setEditmode }: EditModeProps) {
           <div className="font-bold">닉네임</div>
           <input
             name="nickname"
-            className="border border-neutral-500 px-3 rounded-sm"
+            className="appearance-none bg-transparent border-none outline-none cursor-default text-neutral-600"
             type="text"
             defaultValue={userInfo?.nickname}
+            readOnly
           />
+          {<div></div>}
         </div>
         <div className="flex gap-3">
           <div className="font-bold">이메일</div>
@@ -52,8 +54,8 @@ export default function Editmode({ userInfo, setEditmode }: EditModeProps) {
                   className="appearance-none w-3 h-3 border border-gray-400 rounded-full checked:bg-blue-500 checked:border-blue-500"
                   type="radio"
                   name="purpose"
-                  value="weight"
-                  defaultChecked
+                  value="체중 감량"
+                  defaultChecked={userInfo?.training_purpose === "체중 감량"}
                 />
                 <div>체중 감량</div>
               </label>
@@ -62,7 +64,8 @@ export default function Editmode({ userInfo, setEditmode }: EditModeProps) {
                   className="appearance-none w-3 h-3 border border-gray-400 rounded-full checked:bg-blue-500 checked:border-blue-500"
                   type="radio"
                   name="purpose"
-                  value="muscle"
+                  defaultChecked={userInfo?.training_purpose === "근력 증진"}
+                  value="근력 증진"
                 />
                 <div>근력 증진</div>
               </label>
@@ -71,7 +74,8 @@ export default function Editmode({ userInfo, setEditmode }: EditModeProps) {
                   className="appearance-none w-3 h-3 border border-gray-400 rounded-full checked:bg-blue-500 checked:border-blue-500"
                   type="radio"
                   name="purpose"
-                  value="stretch"
+                  defaultChecked={userInfo?.training_purpose === "유연성 증진"}
+                  value="유연성 증진"
                 />
                 <div>유연성 증진</div>
               </label>

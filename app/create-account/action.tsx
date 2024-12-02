@@ -9,7 +9,7 @@ import {
 import z from "zod";
 
 import tokenGenerate from "../components/auth/token-generate";
-import { getCreateClient } from "@/lib/auth";
+import { getAuthSupabase } from "@/lib/auth";
 const checkPasswords = ({
   password,
   confirm_password,
@@ -36,13 +36,12 @@ const formSchema = z
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .superRefine(async ({ email }, ctx) => {
-    const db = await getCreateClient();
-    const { data: duplicated_email, error } = await db
+    const supabase = await getAuthSupabase();
+    const { data: duplicated_email, error } = await supabase
       .from("user_info")
       .select("*")
       .eq("email", email);
 
-    console.log(duplicated_email);
     if (duplicated_email?.length! > 0) {
       ctx.addIssue({
         code: "custom",
@@ -63,7 +62,7 @@ export default async function createAccount(
   prevState: any,
   formData: FormData
 ) {
-  const db = await getCreateClient();
+  const supabase = await getAuthSupabase();
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -86,7 +85,7 @@ export default async function createAccount(
       },
     };
   } else {
-    const { data: authData, error } = await db.auth.signUp({
+    const { data: authData, error } = await supabase.auth.signUp({
       email: result.data?.email,
       password: result.data.password,
       options: {

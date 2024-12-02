@@ -9,5 +9,6 @@ export default async function deleteToken() {
   (await cookieStore).delete("access_token");
 
   const supabase = await getAuthSupabase();
-  supabase.auth.signOut();
+  const sign = supabase.auth.signOut();
+  console.log(sign);
 }

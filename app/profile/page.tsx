@@ -11,7 +11,7 @@ export interface UserInfo {
   height: number | null;
   weight: number | null;
   age: number | null;
-  training_purpose: "체중 감량" | "근력 증대" | "유연성 증진" | null;
+  training_purpose: "체중 감량" | "근력 증진" | "유연성 증진" | null;
 }
 
 export default function Profile() {
@@ -28,7 +28,7 @@ export default function Profile() {
       setIsLoading(false);
     };
     getUser();
-  }, []);
+  }, [editmode]);
 
   if (isLoading) {
     return (
