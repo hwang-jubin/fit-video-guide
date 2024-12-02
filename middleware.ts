@@ -1,8 +1,4 @@
-import getCookie from "@/lib/cookie";
-
 import { NextRequest, NextResponse } from "next/server";
-
-import tokenAuthentication from "./app/components/auth/tokenAuthentication";
 import { getAuthSupabase } from "./lib/auth";
 
 interface Routes {

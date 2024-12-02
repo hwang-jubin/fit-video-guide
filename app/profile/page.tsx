@@ -16,8 +16,8 @@ export interface UserInfo {
 
 export default function Profile() {
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [editmode, setEditmode] = useState<Boolean>(false);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [editmode, setEditmode] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getUser = async () => {

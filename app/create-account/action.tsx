@@ -8,8 +8,8 @@ import {
 } from "@/lib/constants";
 import z from "zod";
 
-import tokenGenerate from "../components/auth/token-generate";
 import { getAuthSupabase } from "@/lib/auth";
+import tokenGenerate from "../components/auth/token-generate";
 const checkPasswords = ({
   password,
   confirm_password,
@@ -42,7 +42,7 @@ const formSchema = z
       .select("*")
       .eq("email", email);
 
-    if (duplicated_email?.length! > 0) {
+    if (duplicated_email && duplicated_email?.length > 0) {
       ctx.addIssue({
         code: "custom",
         message: "이미 등록된 이메일 입니다",
