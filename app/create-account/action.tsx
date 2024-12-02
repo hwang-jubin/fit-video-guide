@@ -7,8 +7,9 @@ import {
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
 import z from "zod";
-import db from "@/lib/db";
+
 import tokenGenerate from "../components/auth/token-generate";
+import { getCreateClient } from "@/lib/auth";
 const checkPasswords = ({
   password,
   confirm_password,
@@ -35,6 +36,7 @@ const formSchema = z
     confirm_password: z.string().min(PASSWORD_MIN_LENGTH),
   })
   .superRefine(async ({ email }, ctx) => {
+    const db = await getCreateClient();
     const { data: duplicated_email, error } = await db
       .from("user_info")
       .select("*")
@@ -61,6 +63,7 @@ export default async function createAccount(
   prevState: any,
   formData: FormData
 ) {
+  const db = await getCreateClient();
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),

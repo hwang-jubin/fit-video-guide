@@ -19,7 +19,7 @@ export const useAuthStore = create(
       },
     }),
     {
-      name: "authState", // localStorage에 저장할 이름
+      name: "authState",
     }
   )
 );

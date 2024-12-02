@@ -7,10 +7,11 @@ import {
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
-import db from "@/lib/db";
-import { redirect } from "next/navigation";
+
 import { z } from "zod";
 import tokenGenerate from "../components/auth/token-generate";
+
+import { getAuthSupabase } from "@/lib/auth";
 
 const formSchema = z.object({
   email: z
@@ -32,6 +33,8 @@ export default async function login(prevState: any, formData: FormData) {
   // Validate the form data using zod schema
   const result = await formSchema.safeParseAsync(data);
 
+  const db = await getAuthSupabase();
+
   if (!result.success) {
     console.log(result.error);
     return {
@@ -48,12 +51,17 @@ export default async function login(prevState: any, formData: FormData) {
     });
 
     if (authData.user) {
-      // token 내려주기
-      await tokenGenerate(
+      const result = await tokenGenerate(
         authData.session.access_token,
         authData.session.refresh_token
       );
+      // const sessionResult = await db.auth.setSession({
+      //   access_token: authData.session.access_token,
+      //   refresh_token: authData.session.refresh_token,
+      // });
 
+      // const session = await getSession();
+      // console.log(session?.error);
       return { success: "성공" };
     } else {
       return {

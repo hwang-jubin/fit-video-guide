@@ -1,7 +1,6 @@
 "use server";
 
-import db from "@/lib/db";
-import { cookies } from "next/headers";
+import { getAuthSupabase } from "@/lib/auth";
 
 export default async function editUserInfo(formData: FormData) {
   const data = {
@@ -10,12 +9,14 @@ export default async function editUserInfo(formData: FormData) {
     purpose: formData.get("purpose"),
   };
 
+  const db = await getAuthSupabase();
+
   //   const cookieStore = cookies();
   //   const token = (await cookieStore).get("access_token")?.value;
   //   console.log(token);
   const session = await db.auth.getUser();
   //   console.log(`session=${session.data.session?.access_token}`);
-  console.log(`user = ${session.data.user}`);
+  console.log(`user = ${session.data.user?.email}`);
   const response = await db.auth.updateUser({
     email: data.email, // 업데이트할 이메일
     // data: {

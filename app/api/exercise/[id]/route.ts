@@ -1,5 +1,4 @@
-import db from "@/lib/db";
-import { createClient } from "@supabase/supabase-js";
+import { db } from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(

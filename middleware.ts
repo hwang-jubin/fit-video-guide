@@ -1,10 +1,9 @@
 import getCookie from "@/lib/cookie";
-import db from "@/lib/db";
+
 import { NextRequest, NextResponse } from "next/server";
 
-import tokenAuthentication, {
-  generateNewAccessToken,
-} from "./app/components/auth/tokenAuthentication";
+import tokenAuthentication from "./app/components/auth/tokenAuthentication";
+import { getAuthSupabase } from "./lib/auth";
 
 interface Routes {
   [key: string]: boolean;
@@ -25,14 +24,19 @@ export async function middleware(request: NextRequest) {
   const access_token = (await cookie).get("access_token")?.value;
   const refresh_token = (await cookie).get("refresh_token")?.value;
 
+  const db = await getAuthSupabase();
+
+  const access_token_request = request.cookies.get("access_token");
+
   // 요청된 URL이 publicOnlyUrls에 존재하는지 확인
   const publicUrl = publicOnlyUrls[request.nextUrl.pathname];
   const privateUrl = privateUrls[request.nextUrl.pathname];
 
-  const session = await db.auth.getSession();
-  console.log(`session=${session.data.session?.access_token}`);
-  // 토큰을 사용하여 사용자 정보 조회
-  if (access_token === "" || access_token) {
+  // await updateSession(request);
+  const token = await db.auth.getUser();
+  console.log(token.data.user?.confirmed_at);
+
+  if (access_token) {
     const data = await tokenAuthentication(access_token);
 
     if (data?.user) {

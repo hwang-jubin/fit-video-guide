@@ -1,10 +1,11 @@
-import db from "@/lib/db";
 import { cookies } from "next/headers";
 import tokenGenerate from "./token-generate";
+import { getAuthSupabase } from "@/lib/auth";
 
 //토큰 검증
 export default async function tokenAuthentication(access_token: string) {
   const cookieStore = cookies();
+  const db = await getAuthSupabase();
   const { data, error } = await db.auth.getUser(access_token);
   const refresh_token = (await cookieStore).get("refresh_token")?.value;
   // const session = db.auth.getSession();
@@ -42,6 +43,7 @@ export default async function tokenAuthentication(access_token: string) {
 
 //refresh token으로 access token 발급
 export async function generateNewAccessToken(refresh_token: string) {
+  const db = await getAuthSupabase();
   const { data: newToken, error } = await db.auth.refreshSession({
     refresh_token: refresh_token,
   });

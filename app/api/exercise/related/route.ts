@@ -1,4 +1,4 @@
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -9,10 +9,7 @@ export async function GET(req: NextRequest) {
   const support_tool = await req.nextUrl.searchParams.get("support_tool");
 
   const queryString = [];
-
-  //   console.log(`age_group=${age_group}`);
-  //   console.log(`training_purpose=${training_purpose}`);
-  //   console.log(`support_tool=${support_tool}`);
+  // const db = await getCreateClient();
 
   if (age_group !== "null") {
     queryString.push(`age_group.eq.${age_group}`);

@@ -1,7 +1,7 @@
 "use server";
 
-import db from "@/lib/db";
-
+import { db } from "@/lib/db";
+// import { getCreateClient } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 const mapCategoryToTrainingPart = (category: string) => {
@@ -20,6 +20,7 @@ const mapCategoryToTrainingPart = (category: string) => {
 export async function GET(req: NextRequest) {
   const queryString = await req.nextUrl.searchParams.get("category");
   const category = mapCategoryToTrainingPart(queryString as string);
+  // const db = await getCreateClient();
 
   if (category === "default") {
     const { data: videos, error } = await db.from("videos").select("*");
