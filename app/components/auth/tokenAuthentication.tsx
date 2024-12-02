@@ -7,16 +7,22 @@ export default async function tokenAuthentication(access_token: string) {
   const cookieStore = cookies();
   const { data, error } = await db.auth.getUser(access_token);
   const refresh_token = (await cookieStore).get("refresh_token")?.value;
+  // const session = db.auth.getSession();
+  // console.log(`session=${(await session).data.session}`);
 
-  //token 만료(403)이면
-  if (error?.status === 403) {
+  //token 만료(403)이면 또는 session에 값이 없으면(왜 없는지 모를...)
+  if (error?.status === 403 || error?.status === 400) {
     if (refresh_token) {
-      const newAccessToken = (await generateNewAccessToken(refresh_token))
-        .session?.access_token;
+      const newToken = await generateNewAccessToken(refresh_token);
+      console.log(newToken);
       //토큰 발급 하고
-      tokenGenerate(newAccessToken!, refresh_token);
+      tokenGenerate(
+        newToken.session?.access_token!,
+        newToken.session?.refresh_token!
+      );
       //그 토큰으로 user 정보 내려주기
       const { data, error } = await db.auth.getUser(access_token);
+      return data;
     }
   } else {
     return data;
@@ -36,11 +42,13 @@ export default async function tokenAuthentication(access_token: string) {
 
 //refresh token으로 access token 발급
 export async function generateNewAccessToken(refresh_token: string) {
-  const { data: newAccessToken, error } = await db.auth.refreshSession({
+  const { data: newToken, error } = await db.auth.refreshSession({
     refresh_token: refresh_token,
   });
 
-  return newAccessToken;
+  console.log(`error=${error}`);
+
+  return newToken;
 }
 
 export async function getUserInfoFromToken() {
@@ -50,6 +58,6 @@ export async function getUserInfoFromToken() {
   if (access_token) {
     const result = await tokenAuthentication(access_token?.value);
 
-    return (await result).user;
+    return result?.user;
   }
 }

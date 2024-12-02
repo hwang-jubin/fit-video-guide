@@ -2,7 +2,6 @@ import getCookie from "@/lib/cookie";
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-import tokenGenerate from "./app/components/auth/token-generate";
 import tokenAuthentication, {
   generateNewAccessToken,
 } from "./app/components/auth/tokenAuthentication";
@@ -29,10 +28,13 @@ export async function middleware(request: NextRequest) {
   // 요청된 URL이 publicOnlyUrls에 존재하는지 확인
   const publicUrl = publicOnlyUrls[request.nextUrl.pathname];
   const privateUrl = privateUrls[request.nextUrl.pathname];
-  console.log(`access_token=${access_token}`);
+
+  const session = await db.auth.getSession();
+  console.log(`session=${session.data.session?.access_token}`);
   // 토큰을 사용하여 사용자 정보 조회
-  if (access_token || access_token === "") {
+  if (access_token === "" || access_token) {
     const data = await tokenAuthentication(access_token);
+
     if (data?.user) {
       if (publicUrl) return NextResponse.redirect(new URL("/", request.url));
     }

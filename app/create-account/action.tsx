@@ -1,20 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { useCookies } from "next-client-cookies";
 
 import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_REGEX,
   PASSWORD_REGEX_ERROR,
 } from "@/lib/constants";
-
 import z from "zod";
-
 import db from "@/lib/db";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import getCookie from "@/lib/cookie";
-
+import tokenGenerate from "../components/auth/token-generate";
 const checkPasswords = ({
   password,
   confirm_password,
@@ -26,7 +20,7 @@ const checkPasswords = ({
 const formSchema = z
   .object({
     username: z
-      .string({ invalid_type_error: "Username must be a string!" })
+      .string({ invalid_type_error: "숫자 제외" })
       .min(3, "3자 이상으로 적어주세요")
       .toLowerCase()
       .trim(),
@@ -47,7 +41,7 @@ const formSchema = z
       .eq("email", email);
 
     console.log(duplicated_email);
-    if (error) {
+    if (duplicated_email?.length! > 0) {
       ctx.addIssue({
         code: "custom",
         message: "이미 등록된 이메일 입니다",
@@ -58,7 +52,7 @@ const formSchema = z
     return z.NEVER;
   })
   .refine(checkPasswords, {
-    message: "Both passwords should be the same!",
+    message: "비밀번호를 확인하세요",
     path: ["confirm_password"],
   });
 
@@ -72,47 +66,40 @@ export default async function createAccount(
     email: formData.get("email"),
     password: formData.get("password"),
     confirm_password: formData.get("confirm_password"),
+    purpose: formData.get("purpose"),
   };
 
   const result = await formSchema.safeParseAsync(data);
-  console.log(result.success);
 
   if (!result.success) {
-    return result.error.flatten();
+    return {
+      error: {
+        formEmail: result.error?.formErrors.formErrors || null,
+        email: result.error?.formErrors.fieldErrors.email || null,
+        username: result.error?.formErrors.fieldErrors.username || null,
+        password: result.error?.formErrors.fieldErrors.password || null,
+        confirm_password:
+          result.error?.formErrors.fieldErrors.confirm_password || null,
+      },
+    };
   } else {
-    //
     const { data: authData, error } = await db.auth.signUp({
       email: result.data?.email,
       password: result.data.password,
       options: {
         data: {
-          nickname: result.data.username, // 추가 메타데이터
+          nickname: result.data.username,
+          training_purpose: data.purpose,
         },
       },
     });
 
-    //   const { data:userDetail, error:userDetailError } = await db
-    // .from('user_info')
-    // .insert({
-    //   id: data.user.id,
-    //   email: data.user.email,
-    //   nickname: userForm.nickname,
-    //   age: userForm.age,
-    //   height: userForm.height,
-    //   weight: userForm.weight,
-    //   training_purpose: userForm.trainingPurpose, # muscle_gain, weight_loss, increased_flexibility
-    // })
-
-    // 쿠키 설정
-    const cookieStore = getCookie();
-    (await cookieStore).set("access_token", authData!.session!.access_token, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7일간 유지
-    });
-
-    console.log(authData.session?.access_token);
-
-    redirect("/");
+    if (authData.session) {
+      await tokenGenerate(
+        authData!.session.access_token,
+        authData!.session.refresh_token
+      );
+    }
+    return { success: "성공" };
   }
 }

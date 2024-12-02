@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
     .from("videos")
     .select("*")
     .or(query)
-    // .order("RANDOM()")
     .limit(10);
 
   return NextResponse.json(videos);

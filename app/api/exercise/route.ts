@@ -35,7 +35,6 @@ export async function GET(req: NextRequest) {
       .select("*")
       .eq("training_part", category);
 
-    console.log(videos);
     return NextResponse.json(videos);
   } else {
     const { data: videos, error } = await db
