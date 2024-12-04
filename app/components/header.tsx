@@ -28,7 +28,7 @@ export default function Header() {
   }
 
   return (
-    <div className="w-[1440px] h-14 box-border bg-white flex items-center px-3 justify-between shadow-lg fixed z-10">
+    <div className="w-full h-14 box-border bg-white flex items-center px-3 justify-between shadow-lg fixed z-10">
       <div className=" flex items-center gap-4">
         <Link href="/">
           <svg className="size-10" viewBox="0 0 640 512">

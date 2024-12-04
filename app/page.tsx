@@ -38,7 +38,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className=" w-[1440px]">
+    <div className=" w-screen ">
       <div className="pt-20 px-5 mx-6 ">
         <Category />
       </div>
