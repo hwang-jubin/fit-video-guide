@@ -36,15 +36,14 @@ export default function SearchResult() {
         <div className="pt-20 px-5 mx-6 box-border">
           <div>
             <div className=" font-semibold text-neutral-500 text-xl">
-              {" "}
-              "{query}" 검색 결과...
+              &quot;{query}&quot; 검색 결과...
             </div>
             <ExcerciseList data={results} />
           </div>
         </div>
       ) : (
         <div className="flex items-center justify-center min-h-screen ">
-          {query} 에 대한 검색 결과가 없습니다.
+          &quot;{query}&quot; 에 대한 검색 결과가 없습니다.
         </div>
       )}
     </div>
