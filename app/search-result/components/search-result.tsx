@@ -11,6 +11,7 @@ export default function SearchResult() {
   const [results, setResults] = useState<dataProps[]>([]); // 검색 결과 상태
   const searchParams = useSearchParams(); // 쿼리 파라미터 객체를 가져옴
   const query = searchParams.get("query"); // 'query' 파라미터를 가져옴
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,18 +19,26 @@ export default function SearchResult() {
       const data = await response.json();
 
       setResults(data);
+      setIsLoading(false);
     };
 
     fetchData();
   }, [query]);
 
   console.log(results);
+
+  if (isLoading) {
+    return null;
+  }
   return (
     <div>
       {results.length !== 0 ? (
         <div className="pt-20 px-5 mx-6 box-border">
           <div>
-            <div> {query} 검색 결과...</div>
+            <div className=" font-semibold text-neutral-500 text-xl">
+              {" "}
+              "{query}" 검색 결과...
+            </div>
             <ExcerciseList data={results} />
           </div>
         </div>
