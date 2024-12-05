@@ -29,17 +29,11 @@ export default function Profile() {
       const result = await fetch("/api/auth");
       const jsonData = await result.json();
 
-      if (result.status === 401) {
-        // 토큰이 유효하지 않으면 "/"로 리다이렉트
-        router.replace("/");
-        return;
-      }
-
       setUserInfo(jsonData);
       setIsLoading(false);
     };
     getUser();
-  }, []);
+  }, [editmode]);
 
   useEffect(() => {
     if (isAuthenticated === false) {
