@@ -10,6 +10,7 @@ export async function GET(
   const { data: detailExercise, error } = await db
     .from("videos")
     .select("*")
-    .eq("id", id);
+    .eq("id", id)
+    .single();
   return NextResponse.json(detailExercise);
 }
