@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Button from "../components/button";
-import FormInput from "../components/formInput";
-import Header from "../components/header";
+import Button from "../../components/button";
+import FormInput from "../../components/formInput";
 
 import createAccount from "./action";
 import { useActionState, useEffect } from "react";
@@ -26,7 +25,7 @@ export default function CreateAccount() {
 
   return (
     <div>
-      <div className=" w-full min-h-screen flex items-center justify-center  pt-10">
+      <div className=" w-full min-h-screen flex items-center justify-center pt-8">
         <div className="w-[400px] h-[560px] shadow-xl flex flex-col p-9 pt-6 ">
           <div className="text-center font-bold text-2xl">회원가입</div>
           <div className="text-center mt-6 font-normal text-sm text-neutral-400">
@@ -100,7 +99,7 @@ export default function CreateAccount() {
               <Button />
             </div>
           </form>
-          <div className="mt-9 flex gap-3 justify-center items-center text-sm ">
+          <div className="mt-12 flex gap-3 justify-center items-center text-sm ">
             <div className=" text-neutral-600">이미 계정이 있으신가요?</div>
             <Link href="/login" className="text-blue-500">
               로그인

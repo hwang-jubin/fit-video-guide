@@ -9,9 +9,9 @@ import {
 } from "@/lib/constants";
 
 import { z } from "zod";
-import tokenGenerate from "../components/auth/token-generate";
 
 import { getAuthSupabase } from "@/lib/auth";
+import tokenGenerate from "@/app/components/auth/token-generate";
 
 const formSchema = z.object({
   email: z

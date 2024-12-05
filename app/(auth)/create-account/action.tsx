@@ -9,7 +9,7 @@ import {
 import z from "zod";
 
 import { getAuthSupabase } from "@/lib/auth";
-import tokenGenerate from "../components/auth/token-generate";
+import tokenGenerate from "../../components/auth/token-generate";
 const checkPasswords = ({
   password,
   confirm_password,

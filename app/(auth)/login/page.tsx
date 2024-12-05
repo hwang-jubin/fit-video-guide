@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Button from "../components/button";
-import FormInput from "../components/formInput";
-import Header from "../components/header";
+
 import { useActionState, useEffect } from "react";
 import login from "./action";
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
+import FormInput from "@/app/components/formInput";
+import Button from "@/app/components/button";
 
 export default function Login() {
   const [state, action] = useActionState(login, null);
