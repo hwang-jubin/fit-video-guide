@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
 import Category from "./components/category";
 
 export type dataProps = {
@@ -38,8 +39,8 @@ export default function Home() {
   }, []);
 
   return (
-    <div className=" w-screen ">
-      <div className="pt-20 px-5 mx-6 ">
+    <div>
+      <div className="pt-20 px-5 mx-6 min-w-[1100px]">
         <Category />
       </div>
     </div>

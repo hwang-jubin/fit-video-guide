@@ -9,7 +9,7 @@ export default function Excercise(data: dataProps) {
   return (
     <Link
       href={`/detail/${data.id}`}
-      className="bg-black h-[350px] rounded-md overflow-hidden"
+      className="bg-black h-[350px] rounded-md overflow-hidden min-w-[300px]"
     >
       <div className="relative w-full h-52 overflow-hidden">
         <Image

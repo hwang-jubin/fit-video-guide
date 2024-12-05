@@ -28,7 +28,7 @@ export default function Header() {
   }
 
   return (
-    <div className="w-full h-14 box-border bg-white flex items-center px-3 justify-between shadow-lg fixed z-10">
+    <div className="w-full h-14 box-border bg-white flex gap-[120px] items-center px-3 justify-between shadow-lg fixed z-10 ">
       <div className=" flex items-center gap-4">
         <Link href="/">
           <svg className="size-10" viewBox="0 0 640 512">
@@ -40,7 +40,7 @@ export default function Header() {
       <SearchBar />
       {!isAuthenticated ? (
         <Link
-          className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
+          className="min-w-16  h-10 rounded-md flex items-center justify-center bg-black p-2 box-border text-white "
           href="/login"
         >
           LogIn
@@ -48,7 +48,7 @@ export default function Header() {
       ) : (
         <div className="flex gap-3">
           <Link
-            className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-1 box-border text-white"
+            className="w-16 h-10 rounded-md flex items-center justify-center bg-black p-2 box-border text-white"
             href="/profile"
           >
             Profile

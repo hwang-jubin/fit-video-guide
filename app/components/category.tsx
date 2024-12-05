@@ -33,7 +33,7 @@ export default function Category() {
   }, [selectedCategory]);
 
   return (
-    <div className="flex gap-2 flex-col">
+    <div className="flex gap-2 flex-col ">
       <div className="flex gap-2">
         {categories.map((category, index) => (
           <button
