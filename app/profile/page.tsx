@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Editmode from "./components/editmode";
 import DisplayMode from "./components/displaymode";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useStore } from "zustand";
 
 export interface UserInfo {
   id: string;
@@ -18,17 +21,31 @@ export default function Profile() {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [editmode, setEditmode] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { isAuthenticated, setLogin } = useStore(useAuthStore);
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       const result = await fetch("/api/auth");
       const jsonData = await result.json();
 
+      if (result.status === 401) {
+        // 토큰이 유효하지 않으면 "/"로 리다이렉트
+        router.replace("/");
+        return;
+      }
+
       setUserInfo(jsonData);
       setIsLoading(false);
     };
     getUser();
-  }, [editmode]);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      router.push("/");
+    }
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return (
