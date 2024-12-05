@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
         .single();
 
       if (training_purpose?.training_purpose === "체중 감량") {
-        const { data: videos, error } = await supabase
+        const { data: videos, error } = await db
           .from("videos")
           .select("*")
           .eq("training_purpose", "체력증진");
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(videos);
       } else if (training_purpose?.training_purpose === "유연성 증진") {
-        const { data: videos, error } = await supabase
+        const { data: videos, error } = await db
           .from("videos")
           .select()
           .eq("training_purpose", "유연성");
