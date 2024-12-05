@@ -31,7 +31,7 @@ export default function SearchResult() {
     return null;
   }
   return (
-    <div>
+    <div className="min-w-[1100px]">
       {results.length !== 0 ? (
         <div className="pt-20 px-5 mx-6 box-border">
           <div>

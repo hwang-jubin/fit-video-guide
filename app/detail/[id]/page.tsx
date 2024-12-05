@@ -45,7 +45,6 @@ export default function ExerciseDetail() {
 
   return (
     <div>
-      <Header />
       <div className="flex">
         <div className="min-w-[800px] w-2/3 border-r-[2px] min-h-screen">
           <div className="pt-20 px-14">
