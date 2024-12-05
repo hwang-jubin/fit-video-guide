@@ -23,19 +23,40 @@ export default function SearchBar() {
     const response = await fetch(`/api/search?query=${query}`);
     const data = await response.json();
     setResults(data); // 데이터 업데이트
-  }, 100); // 500ms 디바운싱
+  }, 300); // 500ms 디바운싱
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Enter 키 입력 방지를 위해 실행 상태 확인
+    if (
+      e.nativeEvent instanceof KeyboardEvent &&
+      e.nativeEvent.key === "Enter"
+    ) {
+      return;
+    }
     setQuery(e.target.value);
-    fetchData(e.target.value); // 디바운싱된 fetchData 호출
+    setTimeout(() => {
+      fetchData(e.target.value); // 디바운싱된 fetchData 호출
+    }, 200);
   };
 
-  const handleFocus = () => {
-    setIsInputFocused(true);
+  const onSubmit = () => {
+    if (query.trim() === "") return;
+
+    setResults([]);
+
+    // 검색 제출 시 결과 초기화
+    router.push(`/search-result?query=${query}`);
+    //  시간을 약간 줘야지 안그러면 한글자만 들어감
+    setTimeout(() => {
+      setQuery("");
+    }, 0);
   };
 
-  const handleBlur = () => {
-    setIsInputFocused(false);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSubmit();
+    }
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -54,31 +75,18 @@ export default function SearchBar() {
     };
   }, []);
 
-  const onSubmit = () => {
-    if (query.trim() === "") return;
-
-    setResults([]); // 검색 제출 시 결과 초기화
-    router.push(`/search-result?query=${query}`);
-    setTimeout(() => {
-      setQuery("");
-    }, 0);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onSubmit();
-    }
-  };
-
   return (
     <div className="relative" ref={searchBarRef}>
       <input
         value={query}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onFocus={() => {
+          setIsInputFocused(true);
+        }}
+        onBlur={() => {
+          setIsInputFocused(false);
+        }}
         className="focus:outline-none focus:border-neutral-400 p-3 w-[600px] h-11 rounded-full border-2"
       />
       <button
