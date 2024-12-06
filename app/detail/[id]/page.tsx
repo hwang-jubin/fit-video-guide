@@ -4,6 +4,7 @@ import Header from "@/app/components/header";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import RelatedVideos from "./components/related-videos";
+import Link from "next/link";
 
 interface Video {
   id: string;
@@ -68,19 +69,44 @@ export default function ExerciseDetail() {
               </div>
               <div className="mt-4 2xl:text-[25px] 2xl:mt-8 ">
                 {data?.age_group && (
-                  <span className={spanStyles}># {data?.age_group}</span>
+                  <Link
+                    href={`/search-result?query=${data?.age_group}`}
+                    className={spanStyles}
+                  >
+                    # {data?.age_group}
+                  </Link>
                 )}
                 {data?.support_tool && (
-                  <span className={spanStyles}># {data?.support_tool}</span>
+                  <Link
+                    href={`/search-result?query=${data?.support_tool}`}
+                    className={spanStyles}
+                  >
+                    # {data?.support_tool}
+                  </Link>
                 )}
                 {data?.training_part && (
-                  <span className={spanStyles}># {data?.training_part}</span>
+                  <Link
+                    href={`/search-result?query=${data?.training_part}`}
+                    className={spanStyles}
+                  >
+                    # {data?.training_part}
+                  </Link>
                 )}
                 {data?.training_purpose && (
-                  <span className={spanStyles}># {data?.training_purpose}</span>
+                  <Link
+                    href={`/search-result?query=${data?.training_purpose}`}
+                    className={spanStyles}
+                  >
+                    # {data?.training_purpose}
+                  </Link>
                 )}
                 {data?.training_type && (
-                  <span className={spanStyles}># {data?.training_type}</span>
+                  <Link
+                    href={`/search-result?query=${data?.training_type}`}
+                    className={spanStyles}
+                  >
+                    # {data?.training_type}
+                  </Link>
                 )}
               </div>
             </div>

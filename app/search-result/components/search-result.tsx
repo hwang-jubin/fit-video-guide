@@ -25,8 +25,6 @@ export default function SearchResult() {
     fetchData();
   }, [query]);
 
-  console.log(results);
-
   if (isLoading) {
     return null;
   }

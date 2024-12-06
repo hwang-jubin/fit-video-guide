@@ -23,7 +23,7 @@ export default function SearchBar() {
     const response = await fetch(`/api/search?query=${query}`);
     const data = await response.json();
     setResults(data); // 데이터 업데이트
-  }, 300); // 500ms 디바운싱
+  }, 200);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Enter 키 입력 방지를 위해 실행 상태 확인
@@ -36,7 +36,7 @@ export default function SearchBar() {
     setQuery(e.target.value);
     setTimeout(() => {
       fetchData(e.target.value); // 디바운싱된 fetchData 호출
-    }, 200);
+    }, 300);
   };
 
   const onSubmit = () => {
