@@ -15,6 +15,7 @@ export default function RelatedVideos({
 }) {
   const [data, setData] = useState<dataProps[]>();
   const [loading, setLoading] = useState<boolean>(true);
+  const number = 10;
 
   useEffect(() => {
     const getData = async () => {
@@ -37,8 +38,29 @@ export default function RelatedVideos({
   return (
     <div className="flex-1 flex-col box-border mx-7">
       <div className="mb-3 text-lg font-bold">연관 동영상</div>
-      {loading ? ( // 로딩 중일 때 메시지 표시
-        <div>Loading...</div>
+      {loading ? (
+        <div className=" flex flex-col gap-3">
+          {Array(number)
+            .fill(null)
+            .map((_, index) => (
+              <div
+                key={index}
+                className="flex flex-col gap-6 items-center bg-neutral-400"
+              >
+                <div className=" w-full h-[270px] ">
+                  <div className="relative w-full h-44 overflow-hidden"></div>
+                  <div className=" p-2 2xl:p-4 gap-2 flex flex-col ">
+                    <div className="bg-neutral-300 h-7 rounded-md"></div>
+                    <div className="flex gap-2 mt-2">
+                      <div className="bg-neutral-300 w-16 h-5 rounded-md "></div>
+                      <div className="bg-neutral-300 w-16 h-5 rounded-md "></div>
+                      <div className="bg-neutral-300 w-16 h-5 rounded-md "></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
       ) : (
         <div className="flex flex-col gap-6 items-center">
           {data?.map(
