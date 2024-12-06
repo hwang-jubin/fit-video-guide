@@ -20,7 +20,7 @@ export default function DisplayMode({
           <div className="font-bold">이메일</div>
           <div>{userInfo?.email}</div>
         </div>
-        <div className=" *:text-neutral-600 flex gap-3 flex-col ">
+        <div className=" flex gap-3 flex-col ">
           <div className="flex gap-3">
             <div className="font-bold">운동 목표</div>
             <div>{userInfo?.training_purpose}</div>

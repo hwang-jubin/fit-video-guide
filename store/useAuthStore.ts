@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface AuthState {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   setLogin: () => void;
   setLogout: () => void;
 }
@@ -10,7 +10,7 @@ interface AuthState {
 export const useAuthStore = create(
   persist<AuthState>(
     (set) => ({
-      isAuthenticated: false, // 초기값 false
+      isAuthenticated: undefined, // 초기값 false
       setLogin: () => {
         set({ isAuthenticated: true });
       },

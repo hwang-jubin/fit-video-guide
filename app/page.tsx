@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Category from "./components/category";
+import ExcerciseList from "./components/exerciseList";
 
 export type dataProps = {
   id: string; // 'e780be0c-5d2e-4727-9d37-f0425f4979e7'와 같은 UUID 형식의 문자열

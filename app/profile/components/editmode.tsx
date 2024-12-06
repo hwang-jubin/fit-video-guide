@@ -28,24 +28,23 @@ export default function Editmode({ userInfo, setEditmode }: EditModeProps) {
           <div className="font-bold">닉네임</div>
           <input
             name="nickname"
-            className="appearance-none bg-transparent border-none outline-none cursor-default text-neutral-600"
+            className="appearance-none bg-transparent border-none outline-none cursor-default"
             type="text"
             defaultValue={userInfo?.nickname}
             readOnly
           />
-          {<div></div>}
         </div>
         <div className="flex gap-3">
           <div className="font-bold">이메일</div>
           <input
             name="email"
-            className="appearance-none bg-transparent border-none outline-none cursor-default text-neutral-600"
+            className="appearance-none bg-transparent border-none outline-none cursor-default"
             type="email"
             defaultValue={userInfo?.email}
             readOnly
           />
         </div>
-        <div className=" *:text-neutral-600 flex gap-3 flex-col ">
+        <div className=" flex gap-3 flex-col ">
           <div>
             <div className="font-bold">운동 목표</div>
             <div className="grid grid-cols-3 *:justify-center ">
