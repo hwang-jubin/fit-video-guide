@@ -15,22 +15,22 @@ const categories = [
 
 export default function Category() {
   const [selectedCategory, setCategory] = useState<string>("전체");
-  const [data, setData] = useState<dataProps[]>();
-  const route = useRouter();
+  // const [data, setData] = useState<dataProps[]>();
+  // const route = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`/api/exercise/?category=${selectedCategory}`); // 유효한 API URL 확인 필요
-      if (res.status === 307) {
-        route.push("/login");
-      } else {
-        const jsonData = await res.json();
-        setData(jsonData);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const res = await fetch(`/api/exercise/?category=${selectedCategory}`); // 유효한 API URL 확인 필요
+  //     if (res.status === 307) {
+  //       route.push("/login");
+  //     } else {
+  //       const jsonData = await res.json();
+  //       setData(jsonData);
+  //     }
+  //   };
 
-    fetchData();
-  }, [selectedCategory]);
+  //   fetchData();
+  // }, [selectedCategory]);
 
   return (
     <div className="flex gap-2 flex-col ">
@@ -53,7 +53,7 @@ export default function Category() {
           </button>
         ))}
       </div>
-      {data && <ExcerciseList data={data} />}
+      <ExcerciseList selectedCategory={selectedCategory} />
     </div>
   );
 }

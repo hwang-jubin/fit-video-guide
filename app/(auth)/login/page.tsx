@@ -3,12 +3,14 @@
 import Link from "next/link";
 
 import { useActionState, useEffect } from "react";
-import login from "./action";
+
 import { useStore } from "zustand";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import FormInput from "@/app/components/formInput";
+
 import Button from "@/app/components/button";
+import login from "./action";
+import FormInput from "@/app/components/formInput";
 
 export default function Login() {
   const [state, action] = useActionState(login, null);

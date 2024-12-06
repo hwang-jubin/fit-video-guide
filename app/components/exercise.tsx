@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { dataProps } from "../page";
 import Link from "next/link";
+import { useState } from "react";
 
 const spanStyles =
   "bg-white text-black px-2 box-border rounded-md mr-1 inline-block text-sm";
