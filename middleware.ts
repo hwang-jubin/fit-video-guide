@@ -24,9 +24,6 @@ export async function middleware(request: NextRequest) {
   const { data: session, error } = await supabase.auth.getUser();
 
   if (session.user) {
-    if (session.user === null) {
-      await supabase.auth.refreshSession();
-    }
     if (publicUrl) return NextResponse.redirect(new URL("/", request.url));
   } else {
     if (privateUrl) {
