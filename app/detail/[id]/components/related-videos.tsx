@@ -1,6 +1,7 @@
 import { dataProps } from "@/app/page";
 import { useEffect, useState } from "react";
 import RelatedVideo from "./related-video";
+import { useParams } from "next/navigation";
 
 export default function RelatedVideos({
   id,

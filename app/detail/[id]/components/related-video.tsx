@@ -16,6 +16,7 @@ export default function RelatedVideo(data: dataProps) {
           alt={data.id}
           sizes="100%"
           priority
+          unoptimized
         />
       </div>
       <div className="bg-black p-2 2xl:p-4 gap-2 flex flex-col ">

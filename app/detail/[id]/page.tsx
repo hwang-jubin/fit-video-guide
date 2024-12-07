@@ -34,14 +34,34 @@ export default function ExerciseDetail() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
     const getData = async () => {
-      const response = await fetch(`/api/exercise/${param.id}`);
-      const fetchedData = (await response.json()) as Video;
+      if (!param.id) {
+        // param.id가 준비될 때까지 기다림
+        await new Promise((resolve) => {
+          const checkParam = setInterval(() => {
+            if (param.id) {
+              clearInterval(checkParam);
+              resolve(true);
+            }
+          }, 100); // 100ms 간격으로 param.id를 체크
+        });
+      }
 
-      setData(fetchedData);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/exercise/${param.id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const fetchedData = (await response.json()) as Video;
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     getData();
   }, [param.id]);
 
@@ -52,15 +72,15 @@ export default function ExerciseDetail() {
           <div className="pt-[110px] px-14">
             <div className="flex flex-col ">
               {isLoading ? (
-                // 로딩 중에는 스켈레톤을 보여주거나 고정된 크기를 적용
                 <div className=" w-full aspect-[7/4] bg-neutral-400 rounded-md" />
               ) : (
                 <video
                   key={data?.video_url}
                   controls
                   className="w-full h-auto"
-                  preload="metadata"
+                  preload="auto"
                   style={{ objectFit: "fill" }}
+                  poster={data?.thumbnail_url}
                 >
                   <source src={data?.video_url} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -131,12 +151,14 @@ export default function ExerciseDetail() {
           </div>
         </div>
         <div className="pt-[70px] flex-grow min-w-[400px] w-1/3">
-          <RelatedVideos
-            id={data?.id}
-            age_group={data?.age_group}
-            training_purpose={data?.training_purpose}
-            support_tool={data?.support_tool}
-          />
+          {!isLoading && data && (
+            <RelatedVideos
+              id={data?.id}
+              age_group={data?.age_group}
+              training_purpose={data?.training_purpose}
+              support_tool={data?.support_tool}
+            />
+          )}
         </div>
       </div>
     </div>

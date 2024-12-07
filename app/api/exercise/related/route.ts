@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
   const support_tool = await req.nextUrl.searchParams.get("support_tool");
 
   const queryString = [];
-  // const db = await getCreateClient();
 
   if (age_group !== "null") {
     queryString.push(`age_group.eq.${age_group}`);
@@ -25,11 +24,29 @@ export async function GET(req: NextRequest) {
 
   const query = queryString.join(",");
 
-  const { data: videos, error } = await db
-    .from("videos")
-    .select("*")
-    .or(query)
-    .limit(10);
+  try {
+    const { data: videos, error } = await db
+      .from("videos")
+      .select("*")
+      .or(query)
+      .limit(10);
 
-  return NextResponse.json(videos);
+    // 데이터가 없거나 에러가 발생한 경우
+    if (error) {
+      console.error("Error fetching data:", error);
+      return NextResponse.json(
+        { error: "Error fetching data from the database." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(videos);
+  } catch (error) {
+    console.error("Error occurred during the request:", error);
+    // 504 Timeout 오류를 처리하는 부분
+    return NextResponse.json(
+      { error: "Request timed out. Please try again later." },
+      { status: 504 }
+    );
+  }
 }

@@ -2,7 +2,6 @@
 
 import { getAuthSupabase } from "@/lib/auth";
 import { db } from "@/lib/db";
-// import { getCreateClient } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 const mapCategoryToTrainingPart = (category: string) => {
