@@ -14,6 +14,7 @@ export default function SearchResult() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       const response = await fetch(`/api/search?query=${query}`);
       const data = await response.json();
@@ -25,9 +26,6 @@ export default function SearchResult() {
     fetchData();
   }, [query]);
 
-  if (isLoading) {
-    return null;
-  }
   return (
     <div className="min-w-[1100px]">
       {results.length !== 0 ? (
@@ -36,7 +34,7 @@ export default function SearchResult() {
             <div className=" font-semibold text-neutral-500 text-xl">
               &quot;{query}&quot; 검색 결과...
             </div>
-            <ExcerciseList data={results} />
+            <ExcerciseList data={results} isLoading={isLoading} />
           </div>
         </div>
       ) : (

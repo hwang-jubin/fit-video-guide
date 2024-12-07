@@ -1,33 +1,14 @@
-import { useEffect, useState } from "react";
 import { dataProps } from "../page";
 import Excercise from "./exercise";
-import { useRouter } from "next/navigation";
 
 export default function ExcerciseList({
-  selectedCategory,
+  data,
+  isLoading,
 }: {
-  selectedCategory: string;
+  data: dataProps[];
+  isLoading: boolean;
 }) {
-  const [isLoading, setLoading] = useState(false);
   const number = 12;
-  const [data, setData] = useState<dataProps[]>();
-  const route = useRouter();
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async () => {
-      const res = await fetch(`/api/exercise/?category=${selectedCategory}`); // 유효한 API URL 확인 필요
-      if (res.status === 307) {
-        route.push("/login");
-      } else {
-        const jsonData = await res.json();
-        setData(jsonData);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [selectedCategory]);
 
   return isLoading ? (
     <div className="grid grid-cols-3 gap-4 mt-7">
