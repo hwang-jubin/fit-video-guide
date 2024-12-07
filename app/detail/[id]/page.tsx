@@ -34,34 +34,14 @@ export default function ExerciseDetail() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const getData = async () => {
-      if (!param.id) {
-        // param.id가 준비될 때까지 기다림
-        await new Promise((resolve) => {
-          const checkParam = setInterval(() => {
-            if (param.id) {
-              clearInterval(checkParam);
-              resolve(true);
-            }
-          }, 100); // 100ms 간격으로 param.id를 체크
-        });
-      }
+      const response = await fetch(`/api/exercise/${param.id}`);
+      const fetchedData = (await response.json()) as Video;
 
-      try {
-        setIsLoading(true);
-        const response = await fetch(`/api/exercise/${param.id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const fetchedData = (await response.json()) as Video;
-        setData(fetchedData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      setData(fetchedData);
+      setIsLoading(false);
     };
-
     getData();
   }, [param.id]);
 
@@ -79,8 +59,8 @@ export default function ExerciseDetail() {
                   controls
                   className="w-full h-auto"
                   preload="auto"
-                  style={{ objectFit: "fill" }}
                   poster={data?.thumbnail_url}
+                  style={{ objectFit: "fill" }}
                 >
                   <source src={data?.video_url} type="video/mp4" />
                   Your browser does not support the video tag.
