@@ -19,10 +19,16 @@ const mapCategoryToTrainingPart = (category: string) => {
 
 export async function GET(req: NextRequest) {
   const queryString = await req.nextUrl.searchParams.get("category");
+  const page = await Number(req.nextUrl.searchParams.get("page"));
   const category = mapCategoryToTrainingPart(queryString as string);
 
+  const pageSize = 12;
+
   if (category === "default") {
-    const { data: videos, error } = await db.from("videos").select("*");
+    const { data: videos, error } = await db
+      .from("videos")
+      .select("*")
+      .range((page - 1) * pageSize, page * pageSize - 1);
 
     return NextResponse.json(videos);
   } else if (
@@ -33,14 +39,16 @@ export async function GET(req: NextRequest) {
     const { data: videos, error } = await db
       .from("videos")
       .select("*")
-      .eq("training_part", category);
+      .eq("training_part", category)
+      .range((page - 1) * pageSize, page * pageSize - 1);
 
     return NextResponse.json(videos);
   } else if (category === "밴드" || category === "짐볼") {
     const { data: videos, error } = await db
       .from("videos")
       .select("*")
-      .eq("support_tool", category);
+      .eq("support_tool", category)
+      .range((page - 1) * pageSize, page * pageSize - 1);
 
     return NextResponse.json(videos);
   } else if (category === "맞춤 동영상") {
@@ -58,21 +66,24 @@ export async function GET(req: NextRequest) {
         const { data: videos, error } = await db
           .from("videos")
           .select("*")
-          .eq("training_purpose", "체력증진");
+          .eq("training_purpose", "체력증진")
+          .range((page - 1) * pageSize, page * pageSize - 1);
 
         return NextResponse.json(videos);
       } else if (training_purpose?.training_purpose === "근력 증진") {
         const { data: videos, error } = await db
           .from("videos")
           .select("*")
-          .eq("training_purpose", "근력강화");
+          .eq("training_purpose", "근력강화")
+          .range((page - 1) * pageSize, page * pageSize - 1);
 
         return NextResponse.json(videos);
       } else if (training_purpose?.training_purpose === "유연성 증진") {
         const { data: videos, error } = await db
           .from("videos")
           .select()
-          .eq("training_purpose", "유연성");
+          .eq("training_purpose", "유연성")
+          .range((page - 1) * pageSize, page * pageSize - 1);
 
         return NextResponse.json(videos);
       }

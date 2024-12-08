@@ -1,12 +1,17 @@
 import { dataProps } from "../page";
 import Excercise from "./exercise";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ExcerciseList({
   data,
   isLoading,
+  loadMoreData,
+  hasMore,
 }: {
   data: dataProps[];
   isLoading: boolean;
+  loadMoreData: () => void;
+  hasMore: boolean;
 }) {
   const number = 12;
 
@@ -33,10 +38,19 @@ export default function ExcerciseList({
         ))}
     </div>
   ) : (
-    <div className="grid grid-cols-3 gap-4 mt-7">
-      {data?.map((data) => (
-        <Excercise key={data.id} {...data} />
-      ))}
-    </div>
+    <InfiniteScroll
+      dataLength={data.length} // 현재 데이터 길이
+      next={loadMoreData} // 스크롤 끝에 도달하면 loadMoreData 호출
+      hasMore={hasMore} // 더 이상 데이터가 없으면 더 이상 요청하지 않음
+      loader={""} // 로딩 메시지
+      endMessage={""} // 끝 메시지
+      scrollThreshold={0.95} // 화면의 95%를 스크롤하면 데이터를 가져옵니다
+    >
+      <div className="grid grid-cols-3 gap-4 mt-7">
+        {data?.map((data, index) => (
+          <Excercise key={index} {...data} />
+        ))}
+      </div>
+    </InfiniteScroll>
   );
 }

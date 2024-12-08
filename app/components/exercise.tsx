@@ -16,7 +16,7 @@ export default function Excercise(data: dataProps) {
         <Image
           className="object-cover"
           fill
-          src={data.thumbnail_url}
+          src={data.thumbnail_urls[2]}
           alt={data.id}
           sizes="100%"
           priority
